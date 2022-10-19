@@ -24,7 +24,7 @@
 	:height 118)
 
 ; Load theme
-(load-theme 'wombat t)
+(load-theme 'doom-dark+ t)
 
 ;; General Options
 
@@ -56,11 +56,12 @@
 ;; Packages
 
 ; Basic utility packages.
-; diminish -> Unclutter statusbar
-; swiper   -> Fuzzy finder
-; ivy      -> Completion framework
-; ivy-rich -> Extra ivy functionality
-; counsel  -> Better commands (works with ivy)
+; diminish   -> Unclutter statusbar
+; swiper     -> Fuzzy finder
+; ivy        -> Completion framework
+; ivy-rich   -> Extra ivy functionality
+; counsel    -> Better commands (works with ivy)
+; drag-stuff -> Move text up and down
 (use-package diminish)
 
 (use-package swiper)
@@ -97,20 +98,42 @@
 	:config
 	(counsel-mode 1))
 
+(use-package drag-stuff
+	:init
+	(drag-stuff-mode t))
+
 ; Packages for prettiness
 ; doom-themes -> Themes from Doom Emacs
 ; mixed-pitch -> Allow Emacs to have different sized fonts
-(use-package mixed-pitch ; Allow for multiple font sizes
+(use-package doom-themes)
+(use-package mixed-pitch
 	:hook
 	(org-mode . mixed-pitch-mode)
 	:config
   (set-face-attribute 'fixed-pitch nil :font user/font)
   (set-face-attribute 'variable-pitch nil :font user/font))
 
-
-(use-package doom-themes)
-; Evil mode
-
+; Evil mode (Vim keybindings)
+; evil            -> Vim-like experience
+; evil-collection -> Extra keys for evil
+(use-package evil ; Vim keys
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+	(setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1)
+	(define-key evil-normal-state-map (kbd "C-f") nil)
+  ; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
 
 ; Custom (do not touch)
 (custom-set-variables
