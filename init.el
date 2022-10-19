@@ -18,7 +18,7 @@
 (setq frame-resize-pixelwise t)
 
 ; Set the default font
-(setq user/font "JetBrains Mono Light")
+(defconst user/font "JetBrains Mono Light")
 (set-face-attribute 'default nil
 	:font user/font
 	:height 118)
@@ -55,13 +55,14 @@
 
 ;; Packages
 
-; Basic utility packages.
+; Core utility packages.
 ; diminish   -> Unclutter statusbar
 ; swiper     -> Fuzzy finder
 ; ivy        -> Completion framework
 ; ivy-rich   -> Extra ivy functionality
 ; counsel    -> Better commands (works with ivy)
 ; drag-stuff -> Move text up and down
+; general    -> Unified keybinding macros
 (use-package diminish)
 
 (use-package swiper)
@@ -83,6 +84,11 @@
 	:config
 	(ivy-mode 1))
 
+(use-package general
+	:config
+	(general-evil-setup t)
+	(general-auto-unbind-keys))
+
 (use-package ivy-rich
 	:after ivy
 	:init
@@ -103,15 +109,22 @@
 	(drag-stuff-mode t))
 
 ; Packages for prettiness
-; doom-themes -> Themes from Doom Emacs
-; mixed-pitch -> Allow Emacs to have different sized fonts
+; doom-themes        -> Themes from Doom Emacs
+; mixed-pitch        -> Allow Emacs to have different sized fonts
+; rainbow-delimiters -> Match delimiters by colors
+
 (use-package doom-themes)
+
 (use-package mixed-pitch
 	:hook
 	(org-mode . mixed-pitch-mode)
 	:config
   (set-face-attribute 'fixed-pitch nil :font user/font)
   (set-face-attribute 'variable-pitch nil :font user/font))
+
+(use-package rainbow-delimiters
+	:hook
+	(prog-mode . rainbow-delimiters-mode))
 
 ; Evil mode (Vim keybindings)
 ; evil            -> Vim-like experience
@@ -127,13 +140,24 @@
 	(define-key evil-normal-state-map (kbd "C-f") nil)
   ; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 (use-package evil-collection
   :after evil
   :config
   (evil-collection-init))
+
+;; Keybindings
+
+; Create a leader key definer for later use
+(defconst user/leader-key "SPC")
+(general-create-definer leader-def
+	:states 'normal
+	:prefix user/leader-key)
+
+; Global keybindings
+(leader-def
+	"e" 'find-file)
+
 
 ; Custom (do not touch)
 (custom-set-variables
