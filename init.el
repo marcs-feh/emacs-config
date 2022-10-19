@@ -148,6 +148,13 @@
 
 ;; Keybindings
 
+; Unbind conflicting/bad keybindings
+(general-unbind
+	"C-z"
+	"C-j"
+	"C-k"
+	"L" "H")
+
 ; Create a leader key definer for later use
 (defconst user/leader-key "SPC")
 (general-create-definer leader-def
@@ -155,8 +162,14 @@
 	:prefix user/leader-key)
 
 ; Global keybindings
+(general-define-key
+	:states 'motion
+	"H" 'switch-to-prev-buffer
+	"L" 'switch-to-next-buffer)
+
 (leader-def
-	"e" 'find-file)
+	"e" 'find-file
+	"TAB" 'counsel-switch-buffer)
 
 
 ; Custom (do not touch)
