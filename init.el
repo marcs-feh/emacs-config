@@ -18,8 +18,9 @@
 (setq frame-resize-pixelwise t)
 
 ; Set the default font
+(setq user/font "JetBrains Mono Light")
 (set-face-attribute 'default nil
-	:font "JetBrains Mono Light"
+	:font user/font
 	:height 118)
 
 ; Load theme
@@ -52,6 +53,66 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; Packages
+
+; Basic utility packages.
+; diminish -> Unclutter statusbar
+; swiper   -> Fuzzy finder
+; ivy      -> Completion framework
+; ivy-rich -> Extra ivy functionality
+; counsel  -> Better commands (works with ivy)
+(use-package diminish)
+
+(use-package swiper)
+
+(use-package ivy
+	:diminish
+	:bind (:map ivy-minibuffer-map
+				 ("TAB" . ivy-alt-done)
+				 ("C-l" . ivy-alt-done)
+				 ("C-j" . ivy-next-line)
+				 ("C-k" . ivy-previous-line)
+				 :map ivy-switch-buffer-map
+				 ("C-k" . ivy-previous-line)
+				 ("C-l" . ivy-done)
+				 ("C-d" . ivy-switch-buffer-kill)
+				 :map ivy-reverse-i-search-map
+				 ("C-k" . ivy-previous-line)
+				 ("C-d" . ivy-reverse-i-search-kill))
+	:config
+	(ivy-mode 1))
+
+(use-package ivy-rich
+	:after ivy
+	:init
+	(ivy-rich-mode 1))
+
+(use-package counsel
+	:diminish
+	:bind (("C-M-j" . 'counsel-switch-buffer)
+				 :map minibuffer-local-map
+				 ("C-r" . 'counsel-minibuffer-history))
+	:custom
+	(counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+	:config
+	(counsel-mode 1))
+
+; Packages for prettiness
+; doom-themes -> Themes from Doom Emacs
+; mixed-pitch -> Allow Emacs to have different sized fonts
+(use-package mixed-pitch ; Allow for multiple font sizes
+	:hook
+	(org-mode . mixed-pitch-mode)
+	:config
+  (set-face-attribute 'fixed-pitch nil :font user/font)
+  (set-face-attribute 'variable-pitch nil :font user/font))
+
+
+(use-package doom-themes)
+; Evil mode
+
+
+; Custom (do not touch)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
