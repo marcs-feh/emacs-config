@@ -9,6 +9,11 @@
 (setq visible-bell nil)
 (setq-default tab-width 2)
 
+; Make scrolling smoother and make lines scroll sooner.
+;(setq scroll-conservatively 9999)
+(setq scroll-step 1)
+(setq scroll-margin 8)
+
 ; Show line and column numbers. Add fringes to the sides of the screen
 (global-display-line-numbers-mode)
 (column-number-mode)
@@ -155,6 +160,10 @@
   :config
   (evil-collection-init))
 
+; Extra language modes
+; lua-mode -> Lua programming
+(use-package lua-mode)
+
 ;; Keybindings
 
 ; Unbind conflicting/bad keybindings
@@ -175,8 +184,8 @@
 ; Global keybindings
 (general-define-key
 	:states 'motion
-	"H" 'switch-to-prev-buffer
-	"L" 'switch-to-next-buffer
+	"H"   'switch-to-prev-buffer
+	"L"   'switch-to-next-buffer
 	"M-h" 'evil-window-left
 	"M-j" 'evil-window-down
 	"M-k" 'evil-window-up
@@ -192,15 +201,4 @@
 	"TAB" 'counsel-switch-buffer)
 
 ; Custom (do not touch)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
