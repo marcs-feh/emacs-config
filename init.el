@@ -155,6 +155,7 @@
   ; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
 (use-package evil-collection
   :after evil
   :config
@@ -197,8 +198,18 @@
 	"C-k" 'drag-stuff-up)
 
 (leader-def
-	"e" 'find-file
-	"TAB" 'counsel-switch-buffer)
+	"e"   'find-file
+	"SPC" 'counsel-switch-buffer
+	"c"   'delete-window
+	"C-c" 'evil-delete-buffer
+	"C-l" 'split-window-horizontally
+	"C-j" 'split-window-vertically
+	"t"   'term)
+
+;; Diminish modes
+
+(diminish 'eldoc-mode)
+(diminish 'evil-collection-unimpaired-mode)
 
 ; Custom (do not touch)
 
