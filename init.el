@@ -33,6 +33,15 @@
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 
+; Performance enhancing options, garbage collect on idle and window focus loss
+; wait until Emacs has allocated more memory before running gc.
+(defun MiB (n) (* n 1024 1024))
+(add-hook 'after-init-hook
+  #'(lambda ()
+			(setq gc-cons-threshold (MiB 64))))
+(add-hook 'focus-out-hook 'garbage-collect)
+(run-with-idle-timer 5 t 'garbage-collect)
+
 ;; Package Manager
 
 ; Set package sources
@@ -170,7 +179,6 @@
 (leader-def
 	"e" 'find-file
 	"TAB" 'counsel-switch-buffer)
-
 
 ; Custom (do not touch)
 (custom-set-variables
