@@ -161,7 +161,9 @@
 (general-unbind
 	"C-z"
 	"C-j"
-	"C-k"
+	"C-k")
+
+(general-unbind 'motion
 	"L" "H")
 
 ; Create a leader key definer for later use
@@ -174,7 +176,16 @@
 (general-define-key
 	:states 'motion
 	"H" 'switch-to-prev-buffer
-	"L" 'switch-to-next-buffer)
+	"L" 'switch-to-next-buffer
+	"M-h" 'evil-window-left
+	"M-j" 'evil-window-down
+	"M-k" 'evil-window-up
+	"M-l" 'evil-window-right
+	"C-s" 'save-buffer)
+
+(general-define-key
+	"C-j" 'drag-stuff-down
+	"C-k" 'drag-stuff-up)
 
 (leader-def
 	"e" 'find-file
