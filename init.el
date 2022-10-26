@@ -39,13 +39,14 @@
 (setq make-backup-files nil)
 
 ; Performance enhancing options, garbage collect on idle and window focus loss
-; wait until Emacs has allocated more memory before running gc.
+; wait until Emacs has allocated more memory before running gc. Disable show-paren
 (defun MiB (n) (* n 1024 1024))
 (add-hook 'after-init-hook
   #'(lambda ()
 			(setq gc-cons-threshold (MiB 64))))
 (add-hook 'focus-out-hook 'garbage-collect)
 (run-with-idle-timer 5 t 'garbage-collect)
+(show-paren-mode 0)
 
 ;; Package Manager
 
@@ -72,12 +73,17 @@
 ; Core utility packages.
 ; diminish   -> Unclutter statusbar
 ; swiper     -> Fuzzy finder
+; origami    -> Folding
 ; ivy        -> Completion framework
 ; ivy-rich   -> Extra ivy functionality
 ; counsel    -> Better commands (works with ivy)
 ; drag-stuff -> Move text up and down
 ; general    -> Unified keybinding macros
 (use-package diminish)
+
+(use-package origami
+	:hook
+	(prog-mode . origami-mode))
 
 (use-package swiper)
 
@@ -122,24 +128,6 @@
 	:init
 	(drag-stuff-mode t))
 
-; Packages for prettiness
-; doom-themes        -> Themes from Doom Emacs
-; mixed-pitch        -> Allow Emacs to have different sized fonts
-; rainbow-delimiters -> Match delimiters by colors
-
-(use-package doom-themes)
-
-(use-package mixed-pitch
-	:hook
-	(org-mode . mixed-pitch-mode)
-	:config
-  (set-face-attribute 'fixed-pitch nil :font user/font)
-  (set-face-attribute 'variable-pitch nil :font user/font))
-
-(use-package rainbow-delimiters
-	:hook
-	(prog-mode . rainbow-delimiters-mode))
-
 ; Evil mode (Vim keybindings)
 ; evil            -> Vim-like experience
 ; evil-collection -> Extra keys for evil
@@ -160,6 +148,29 @@
   :after evil
   :config
   (evil-collection-init))
+
+; Packages for prettiness
+; doom-themes        -> Themes from Doom Emacs
+; mixed-pitch        -> Allow Emacs to have different sized fonts
+; rainbow-delimiters -> Match delimiters by colors
+
+(use-package doom-themes)
+
+(use-package mixed-pitch
+	:hook
+	(org-mode . mixed-pitch-mode)
+	:config
+  (set-face-attribute 'fixed-pitch nil :font user/font)
+  (set-face-attribute 'variable-pitch nil :font user/font))
+
+(use-package rainbow-delimiters
+	:hook
+	(prog-mode . rainbow-delimiters-mode))
+
+; Org Mode
+; org-mode -> Markup format, organize things, etc.
+
+(use-package org)
 
 ; Extra language modes
 ; lua-mode -> Lua programming
@@ -198,18 +209,42 @@
 	"C-k" 'drag-stuff-up)
 
 (leader-def
-	"e"   'find-file
-	"SPC" 'counsel-switch-buffer
+	"e"   'counsel-switch-buffer
+	"o"   'find-file
+	"f"   'evil-toggle-fold
+	"w"   'delete-trailing-whitespace
 	"c"   'delete-window
 	"C-c" 'evil-delete-buffer
 	"C-l" 'split-window-horizontally
-	"C-j" 'split-window-vertically
-	"t"   'term)
+	"C-j" 'split-window-vertically)
 
 ;; Diminish modes
 
 (diminish 'eldoc-mode)
 (diminish 'evil-collection-unimpaired-mode)
 
+;; Extra conf
+;; Improve org mode looks
+(setq org-startup-indented t
+				org-pretty-entities t
+				org-hide-emphasis-markers nil
+				org-startup-with-inline-images t
+				org-image-actual-width '(300))
+
 ; Custom (do not touch)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+	 '(origami use-package rainbow-delimiters mixed-pitch lua-mode ivy-rich general evil-collection drag-stuff doom-themes diminish counsel)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-level-1 ((t (:inherit outline-1 :extend nil :height 1.25))))
+ '(org-level-2 ((t (:inherit outline-2 :extend nil :height 1.15))))
+ '(org-level-3 ((t (:inherit outline-3 :extend nil :height 1.1)))))
