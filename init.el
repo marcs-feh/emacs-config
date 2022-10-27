@@ -137,6 +137,7 @@
   (setq evil-want-keybinding nil)
 	(setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
+	(setq evil-want-fine-undo 'fine)
   :config
   (evil-mode 1)
 	(define-key evil-normal-state-map (kbd "C-f") nil)
@@ -212,6 +213,7 @@
 	"e"   'counsel-switch-buffer
 	"o"   'find-file
 	"f"   'evil-toggle-fold
+	"C-u" 'counsel-unicode-char
 	"w"   'delete-trailing-whitespace
 	"c"   'delete-window
 	"C-c" 'evil-delete-buffer
