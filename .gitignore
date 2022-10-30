@@ -38,4 +38,5 @@ smex-items
 tramp
 transient/
 var/
+.lsp-session*
 

@@ -49,13 +49,12 @@
 (show-paren-mode 0)
 
 ;; Package Manager
-
 ; Set package sources
 (require 'package)
 (setq package-archives
 	'(("melpa" . "https://melpa.org/packages/")
 		("org"   . "https://orgmode.org/elpa/")
-		("elpa"  . "https://elpa.gnu.org/packages")))
+		("elpa"  . "https://elpa.gnu.org/packages/")))
 
 ; Initialize package management
 (package-initialize)
@@ -173,6 +172,10 @@
 
 (use-package org)
 
+; LSP Support
+; lsp-mode -> LSP client for Emacs
+(use-package lsp-mode)
+
 ; Extra language modes
 ; lua-mode -> Lua programming
 (use-package lua-mode)
@@ -241,7 +244,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-	 '(origami use-package rainbow-delimiters mixed-pitch lua-mode ivy-rich general evil-collection drag-stuff doom-themes diminish counsel)))
+	 '(lsp-mode origami use-package rainbow-delimiters mixed-pitch lua-mode ivy-rich general evil-collection drag-stuff doom-themes diminish counsel)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -250,3 +254,4 @@
  '(org-level-1 ((t (:inherit outline-1 :extend nil :height 1.25))))
  '(org-level-2 ((t (:inherit outline-2 :extend nil :height 1.15))))
  '(org-level-3 ((t (:inherit outline-3 :extend nil :height 1.1)))))
+
