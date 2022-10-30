@@ -58,8 +58,8 @@
 
 ; Initialize package management
 (package-initialize)
-(unless package-archive-contents
-	(package-refresh-contents))
+;(unless package-archive-contents
+;	(package-refresh-contents))
 
 ; Require use-package for better management
 (unless (package-installed-p 'use-package)
@@ -174,7 +174,9 @@
 
 ; LSP Support
 ; lsp-mode -> LSP client for Emacs
+; company  -> Completion
 (use-package lsp-mode)
+(use-package company)
 
 ; Extra language modes
 ; lua-mode -> Lua programming
@@ -244,7 +246,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-	 '(lsp-mode origami use-package rainbow-delimiters mixed-pitch lua-mode ivy-rich general evil-collection drag-stuff doom-themes diminish counsel)))
+	 '(company-mode lsp-mode origami use-package rainbow-delimiters mixed-pitch lua-mode ivy-rich general evil-collection drag-stuff doom-themes diminish counsel))
+ '(warning-suppress-types '((use-package) (use-package))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
