@@ -72,17 +72,13 @@
 ; Core utility packages.
 ; diminish   -> Unclutter statusbar
 ; swiper     -> Fuzzy finder
-; origami    -> Folding
+; hideshow   -> folding(built-in)
 ; ivy        -> Completion framework
 ; ivy-rich   -> Extra ivy functionality
 ; counsel    -> Better commands (works with ivy)
 ; drag-stuff -> Move text up and down
 ; general    -> Unified keybinding macros
 (use-package diminish)
-
-(use-package origami
-	:hook
-	(prog-mode . origami-mode))
 
 (use-package swiper)
 
@@ -107,6 +103,8 @@
 	:config
 	(general-evil-setup t)
 	(general-auto-unbind-keys))
+
+(add-hook 'prog-mode-hook 'hs-minor-mode)
 
 (use-package ivy-rich
 	:after ivy
@@ -204,6 +202,8 @@
 	:states 'motion
 	"H"   'switch-to-prev-buffer
 	"L"   'switch-to-next-buffer
+	"f"   'evil-close-fold
+	"F"   'evil-open-fold
 	"M-h" 'evil-window-left
 	"M-j" 'evil-window-down
 	"M-k" 'evil-window-up
@@ -217,7 +217,6 @@
 (leader-def
 	"e"   'counsel-switch-buffer
 	"o"   'find-file
-	"f"   'evil-toggle-fold
 	"C-u" 'counsel-unicode-char
 	"w"   'delete-trailing-whitespace
 	"c"   'delete-window
@@ -239,15 +238,6 @@
 				org-image-actual-width '(300))
 
 ; Custom (do not touch)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-	 '(company-mode lsp-mode origami use-package rainbow-delimiters mixed-pitch lua-mode ivy-rich general evil-collection drag-stuff doom-themes diminish counsel))
- '(warning-suppress-types '((use-package) (use-package))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
